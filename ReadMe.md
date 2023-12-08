@@ -7,7 +7,7 @@
 ```curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml -o docker-compose.yml```
 
 #### Pull the freqtrade image
-```docker compose pull```
+```d compose pull```
 
 #### Create user directory structure
 ```d compose run --rm freqtrade create-userdir --userdir user_data```
@@ -25,7 +25,7 @@
 ```d compose run --rm freqtrade test-pairlist```
 
 ## To backtest
-```d compose run --rm freqtrade backtesting --config user_data/config.json --strategy SampleStrategy --timerange 20231201-20231207 -i 5m```
+```d compose run --rm freqtrade backtesting --config user_data/config.json --strategy NostalgiaForInfinityV7 --timerange 20191230-20230930 -i 5m```
 
 ## To build new docker with dependencies
 ```d compose build --pull```
@@ -38,7 +38,18 @@
 * ```d compose -f docker/docker-compose-jupyter.yml build --no-cache```
 
 ## To keep running a strategy
-```d compose run freqtrade trade --strategy SampleStrategy```
+```d compose run freqtrade trade --strategy NostalgiaForInfinityV7```
 
 ## To keep docker up & running
 ```d compose up -d```
+
+## To convert data into freqtrade files
+```freqtrade convert-trade-data --exchange kraken --format-from kraken_csv --format-to feather```
+#### Convert trade data to different ohlcv timeframes
+```freqtrade trades-to-ohlcv -p ETH/USDT ETH/USD ETC/USD --exchange kraken -t 1m 5m 15m 1h```
+#### To list downloaded data
+```d compose run freqtrade list-data -p ETH/USDT```
+
+## To run grafana docker
+* To create a persistent storage: ```d volume create grafana-storage```
+* To run docker: ```d run -d -p 3000:3000 --name=grafana -v grafana-storage:/var/lib/grafana grafana/grafana -v $(pwd)/user_data:/```

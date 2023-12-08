@@ -13,9 +13,6 @@ from technical.indicators import zema
 
 ###########################################################################################################
 ##                NostalgiaForInfinityV7 by iterativ                                                     ##
-##                                                                                                       ##
-##    Strategy for Freqtrade https://github.com/freqtrade/freqtrade                                      ##
-##                                                                                                       ##
 ###########################################################################################################
 ##               GENERAL RECOMMENDATIONS                                                                 ##
 ##                                                                                                       ##
@@ -29,16 +26,6 @@ from technical.indicators import zema
 ##     sell_profit_only must set to false (or not set at all).                                           ##
 ##     ignore_roi_if_buy_signal must set to true (or not set at all).                                    ##
 ##                                                                                                       ##
-###########################################################################################################
-##               DONATIONS                                                                               ##
-##                                                                                                       ##
-##   Absolutely not required. However, will be accepted as a token of appreciation.                      ##
-##                                                                                                       ##
-##   BTC: bc1qvflsvddkmxh7eqhc4jyu5z5k6xcw3ay8jl49sk                                                     ##
-##   ETH (ERC20): 0x83D3cFb8001BDC5d2211cBeBB8cB3461E5f7Ec91                                             ##
-##   BEP20/BSC (ETH, BNB, ...): 0x86A0B21a20b39d16424B7c8003E4A7e12d78ABEe                               ##
-##                                                                                                       ##
-###########################################################################################################
 
 
 class NostalgiaForInfinityV7(IStrategy):
