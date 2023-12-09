@@ -20,18 +20,20 @@
 * with docker ```d compose run --rm freqtrade download-data --pairs BTC/USDT --exchange kraken --days 100 -t 5m```
 * without docker ```freqtrade download-data --exchange kraken```
 
-
 ## To download list of crypto pairs
-```d compose run --rm freqtrade test-pairlist```
+* with docker ```d compose run --rm freqtrade test-pairlist```
+* without docker ```f test-pairlist```
 
 ## To backtest
-```d compose run --rm freqtrade backtesting --config user_data/config.json --strategy-list NostalgiaForInfinityV7 TwoMovingAveragesStrategy --timerange 20191230-20230930 -i 5m```
+* with docker ```d compose run --rm freqtrade backtesting --config user_data/config.json --strategy-list NostalgiaForInfinityV7 TwoMovingAveragesStrategy --timerange 20191230-20230930 -i 5m```
+* without docker ```f backtesting --config user_data/config.json --strategy-list NostalgiaForInfinityV7 TwoMovingAveragesStrategy --timerange 20191230-20230930 -i 5m```
 
 ## To build new docker with dependencies
 ```d compose build --pull```
 
 ## To plot with docker
-```d compose run --rm freqtrade plot-dataframe --strategy NostalgiaForInfinityV7 -p BTC/USDT --timerange=20231201-20231207```
+* with docker ```d compose run --rm freqtrade plot-dataframe --strategy NostalgiaForInfinityV7 -p BTC/USDT --timerange=20231201-20231207```
+* without docker ```f plot-dataframe --strategy NostalgiaForInfinityV7 -p ETH/USDT --timerange=20191201-20231207```
 
 ## To run Jupiter
 * ```d compose -f docker/docker-compose-jupyter.yml up```
