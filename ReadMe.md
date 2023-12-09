@@ -25,13 +25,13 @@
 ```d compose run --rm freqtrade test-pairlist```
 
 ## To backtest
-```d compose run --rm freqtrade backtesting --config user_data/config.json --strategy NostalgiaForInfinityV7 --timerange 20191230-20230930 -i 5m```
+```d compose run --rm freqtrade backtesting --config user_data/config.json --strategy-list NostalgiaForInfinityV7 TwoMovingAveragesStrategy --timerange 20191230-20230930 -i 5m```
 
 ## To build new docker with dependencies
 ```d compose build --pull```
 
 ## To plot with docker
-```d compose run --rm freqtrade plot-dataframe --strategy SampleStrategy -p BTC/USDT --timerange=20231201-20231207```
+```d compose run --rm freqtrade plot-dataframe --strategy NostalgiaForInfinityV7 -p BTC/USDT --timerange=20231201-20231207```
 
 ## To run Jupiter
 * ```d compose -f docker/docker-compose-jupyter.yml up```
@@ -52,4 +52,4 @@
 
 ## To run grafana docker
 * To create a persistent storage: ```d volume create grafana-storage```
-* To run docker: ```d run -d -p 3000:3000 --name=grafana -v grafana-storage:/var/lib/grafana grafana/grafana -v $(pwd)/user_data:/```
+* To run docker: ```d run -d -p 3000:3000 --name=grafana -v grafana-storage:/var/lib/grafana -v $(pwd)/user_data:/user_data grafana/grafana```

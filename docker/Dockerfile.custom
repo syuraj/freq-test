@@ -2,9 +2,11 @@ FROM freqtradeorg/freqtrade:develop
 
 # Switch user to root if you must install something from apt
 # Don't forget to switch the user back below!
-# USER root
+USER root
 
-RUN pip install plotly
+RUN sudo apt-get install supervisor -y
 
 # Switch back to user (only if you required root above)
-# USER ftuser
+USER ftuser
+
+RUN pip install plotly
