@@ -1,7 +1,7 @@
+.git
+.DS_Store
+
 **/data
-**/logs
 **/*.sqlite*
-**/backtest_results
-**/hyperopt_results
 user_data/plot
 **/__pycache__

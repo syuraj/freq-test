@@ -1,4 +1,4 @@
 
-rsync -av --filter=':- .gitignore' . opc@158.178.206.102:~/freq-test
+rsync -arvth --delete --progress --filter=':- .gitignore' ./ ubuntu@141.145.212.19:~/freq-test
 
-ssh opc@158.178.206.102 "bash -lc 'cd ~/freq-test; docker compose up -d;'"
+ssh ubuntu@141.145.212.19 "bash -lc 'cd ~/freq-test; sudo docker compose build; sudo docker compose up -d'"
