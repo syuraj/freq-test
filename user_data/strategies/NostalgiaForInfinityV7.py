@@ -13,6 +13,9 @@ from technical.indicators import zema
 
 ###########################################################################################################
 ##                NostalgiaForInfinityV7 by iterativ                                                     ##
+##                                                                                                       ##
+##    Strategy for Freqtrade https://github.com/freqtrade/freqtrade                                      ##
+##                                                                                                       ##
 ###########################################################################################################
 ##               GENERAL RECOMMENDATIONS                                                                 ##
 ##                                                                                                       ##
@@ -26,6 +29,16 @@ from technical.indicators import zema
 ##     sell_profit_only must set to false (or not set at all).                                           ##
 ##     ignore_roi_if_buy_signal must set to true (or not set at all).                                    ##
 ##                                                                                                       ##
+###########################################################################################################
+##               DONATIONS                                                                               ##
+##                                                                                                       ##
+##   Absolutely not required. However, will be accepted as a token of appreciation.                      ##
+##                                                                                                       ##
+##   BTC: bc1qvflsvddkmxh7eqhc4jyu5z5k6xcw3ay8jl49sk                                                     ##
+##   ETH (ERC20): 0x83D3cFb8001BDC5d2211cBeBB8cB3461E5f7Ec91                                             ##
+##   BEP20/BSC (ETH, BNB, ...): 0x86A0B21a20b39d16424B7c8003E4A7e12d78ABEe                               ##
+##                                                                                                       ##
+###########################################################################################################
 
 
 class NostalgiaForInfinityV7(IStrategy):
@@ -54,17 +67,17 @@ class NostalgiaForInfinityV7(IStrategy):
     process_only_new_candles = True
 
     # These values can be overridden in the "ask_strategy" section in the config.
-    use_sell_signal = True
-    sell_profit_only = False
-    ignore_roi_if_buy_signal = True
+    use_exit_signal = True
+    exit_profit_only = False
+    ignore_roi_if_entry_signal = True
 
     # Number of candles the strategy requires before producing valid signals
     startup_candle_count: int = 400
 
     # Optional order type mapping.
     order_types = {
-        'buy': 'limit',
-        'sell': 'limit',
+        'entry': 'limit',
+        'exit': 'limit',
         'trailing_stop_loss': 'limit',
         'stoploss': 'limit',
         'stoploss_on_exchange': False
@@ -1108,7 +1121,7 @@ class NostalgiaForInfinityV7(IStrategy):
     def get_ticker_indicator(self):
         return int(self.timeframe[:-1])
 
-    def custom_sell(self, pair: str, trade: 'Trade', current_time: 'datetime', current_rate: float,
+    def custom_exit(self, pair: str, trade: 'Trade', current_time: 'datetime', current_rate: float,
                     current_profit: float, **kwargs):
         dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
         last_candle = dataframe.iloc[-1].squeeze()
@@ -1551,7 +1564,7 @@ class NostalgiaForInfinityV7(IStrategy):
         return dataframe
 
 
-    def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+    def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         conditions = []
         # Protections
         buy_01_protections = [True]
@@ -2409,7 +2422,7 @@ class NostalgiaForInfinityV7(IStrategy):
 
         return dataframe
 
-    def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+    def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         conditions = []
 
         conditions.append(
