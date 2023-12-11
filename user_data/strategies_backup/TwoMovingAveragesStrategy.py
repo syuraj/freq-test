@@ -16,7 +16,7 @@ class TwoMovingAveragesStrategy(IStrategy):
 
         return dataframe
 
-    def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+    def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         # Generate buy signal when ma_fast crosses above ma_slow
         dataframe.loc[
             (dataframe['ma_fast'] > dataframe['ma_slow']) &
@@ -26,7 +26,7 @@ class TwoMovingAveragesStrategy(IStrategy):
 
         return dataframe
 
-    def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+    def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         # Generate sell signal when ma_fast crosses below ma_slow
         dataframe.loc[
             (dataframe['ma_fast'] < dataframe['ma_slow']) &

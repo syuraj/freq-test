@@ -28,6 +28,7 @@
 * with docker ```d compose run --rm freqtrade backtesting --config user_data/config.json --strategy-list NostalgiaForInfinityV7 TwoMovingAveragesStrategy --timerange 20191230-20230930 -i 5m```
 * without docker ```f backtesting --config user_data/configs/config.json --strategy-list NostalgiaForInfinityV7 TwoMovingAveragesStrategy --timerange 20191230-20230930 -i 5m```
 * ```f backtesting --config user_data/backtest_configs/picasso_rsi_bb_binance.json --strategy-list RSI_BB_MACD_Nov_2023_1h_2_Dec --timerange 20191230-20230930 -i 1h```
+* ```f backtesting --strategy-list EDTMA_Long_Short_prot_CE_1h_3Lev_3mt_Dec21_np_April CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16 CE_CTI_STC_EMA_1h_V5_4x_3mt_Jan16_np_Jan20 --config ./user_data/backtest_configs/picasso_EDTMA.json --timerange 20191230-20230930 -i 1h```
 
 ## To build new docker with dependencies
 ```d compose build --pull```
