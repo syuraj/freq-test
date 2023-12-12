@@ -229,20 +229,6 @@
           }
 
     ],
-    "edge": {
-        "enabled": false,
-        "process_throttle_secs": 3600,
-        "calculate_since_number_of_days": 14,
-        "allowed_risk": 0.015,
-        "stoploss_range_min": -0.05,
-        "stoploss_range_max": -0.25,
-        "stoploss_range_step": -0.01,
-        "minimum_winrate": 0.70,
-        "minimum_expectancy": 0.025,
-        "min_trade_number": 10,
-        "max_trade_duration_minute": 240,
-        "remove_pumps": false
-    },
     "telegram": {
         "enabled": false,
         "token": "",

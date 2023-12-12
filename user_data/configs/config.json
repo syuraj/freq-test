@@ -220,6 +220,11 @@
               "refresh_period": 3600
           },
           {
+            "method": "PerformanceFilter",
+            "minutes": 14400,
+            "min_profit": 0.015
+        },
+          {
         "method": "ShuffleFilter"
           }
 
@@ -254,9 +259,9 @@
         "verbosity": "error",
         "enable_openapi": false,
         "jwt_secret_key": "50afb5e35bd5696a187badb5537dfc2b26q23d5226143827b4108e1de793d92c",
-        "CORS_origins": [],
-        "username": "user",
-        "password": "password"
+        "CORS_origins": ["http://127.0.0.1:8080", "http://localhost:8080", "http://sunfreq.ddns.net:8080"],
+        "username": "freqtrader",
+        "password": "testing@123"
     },
     "bot_name": "useful_strategy_name",
     "initial_state": "running",

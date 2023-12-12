@@ -1,7 +1,9 @@
 .git
 .DS_Store
+.idea/
 
 **/data
 **/*.sqlite*
 user_data/plot
 **/__pycache__
+*.sav

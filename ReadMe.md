@@ -18,7 +18,7 @@
 
 ## To download data
 * with docker ```d compose run --rm freqtrade download-data --pairs BTC/USDT --exchange kraken --days 100 -t 5m```
-* without docker ```f download-data --exchange binace --config ./user_data/backtest_configs/picasso_rsi_bb_binance.json --days 1000 -t 1h```
+* without docker ```f download-data --exchange binace --config ./user_data/configs_backtest/config.json --days 1000 -t 1h```
 
 ## To download list of crypto pairs
 * with docker ```d compose run --rm freqtrade test-pairlist```
@@ -28,6 +28,7 @@
 * with docker ```d compose run --rm freqtrade backtesting --config user_data/config.json --strategy-list NostalgiaForInfinityV7 TwoMovingAveragesStrategy --timerange 20191230-20230930 -i 5m```
 * without docker ```f backtesting --config user_data/configs/config.json --strategy-list NostalgiaForInfinityV7 TwoMovingAveragesStrategy --timerange 20191230-20230930 -i 5m```
 * ```f backtesting --config user_data/backtest_configs/picasso_rsi_bb_binance.json --strategy-list RSI_BB_MACD_Nov_2023_1h_2_Dec --timerange 20191230-20230930 -i 1h```
+* ```f backtesting --strategy-list TSPredict --config ./user_data/configs_backtest/config.json --timerange 20191230-20230930 -i 5m ```
 * ```f backtesting --strategy-list EDTMA_Long_Short_prot_CE_1h_3Lev_3mt_Dec21_np_April CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16 CE_CTI_STC_EMA_1h_V5_4x_3mt_Jan16_np_Jan20 --config ./user_data/backtest_configs/picasso_EDTMA.json --timerange 20191230-20230930 -i 1h```
 
 ## To build new docker with dependencies
@@ -57,3 +58,6 @@
 ## To run grafana docker
 * To create a persistent storage: ```d volume create grafana-storage```
 * To run docker: ```d run -d -p 3000:3000 --name=grafana -v grafana-storage:/var/lib/grafana -v $(pwd)/user_data:/user_data grafana/grafana```
+
+## To hpyeroptimize
+* ```f hyperopt --config user_data/config-static-tutorial.json --hyperopt-loss SharpeHyperOptLoss --spaces buy sell --strategy SMAOffsetProtectOptV1 --epochs 10 --timerange=20230605- --disable-param-export```
