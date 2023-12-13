@@ -45,7 +45,7 @@ services:
       trade
       --logfile /freqtrade/user_data/logs/picasso_rsi_bb.log
       --db-url sqlite:////freqtrade/user_data/dbs/picasso_rsi_bb.sqlite
-      --config /freqtrade/user_data/configs/RSI_BB_MACD_Nov_2023_1h_2_Dec.json
+      --config /freqtrade/user_data/configs/RSI_BB_MACD_Nov_2023_1h_2_Dec_live.json
       --strategy RSI_BB_MACD_Nov_2023_1h_2_Dec
   freqtrade_NostalgiaForInfinityV7:
     image: freqtradeorg/freqtrade:stable
@@ -61,6 +61,20 @@ services:
       --db-url sqlite:////freqtrade/user_data/dbs/NostalgiaForInfinityV7.sqlite
       --config /freqtrade/user_data/configs/NostalgiaForInfinityV7.json
       --strategy NostalgiaForInfinityV7
+  freqtrade_HPStrategy:
+    image: freqtradeorg/freqtrade:stable
+    restart: unless-stopped
+    container_name: freqtrade_HPStrategy
+    volumes:
+      - "./user_data:/freqtrade/user_data"
+    ports:
+      - "8083:8080"
+    command: >
+      trade
+      --logfile /freqtrade/user_data/logs/HPStrategy.log
+      --db-url sqlite:////freqtrade/user_data/dbs/HPStrategy.sqlite
+      --config /freqtrade/user_data/configs/okx.json
+      --strategy HPStrategy
   grafana:
     image: grafana/grafana
     container_name: grafana

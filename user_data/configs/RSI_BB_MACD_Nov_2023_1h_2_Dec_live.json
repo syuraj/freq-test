@@ -232,22 +232,22 @@
         "chat_id": "",
         "keyboard": [
             [
-              "/daily",
-              "/stats",
-              "/balance",
-              "/profit"
+                "/daily",
+                "/stats",
+                "/balance",
+                "/profit"
             ],
             [
-              "/status table",
-              "/performance",
-              "/whitelist"
+                "/status table",
+                "/performance",
+                "/whitelist"
             ],
             [
-              "/reload_config",
-              "/count",
-              "/logs"
+                "/reload_config",
+                "/count",
+                "/logs"
             ]
-          ]
+        ]
     },
     "api_server": {
         "enabled": true,
@@ -264,7 +264,7 @@
         "username": "freqtrader",
         "password": "testing@123"
     },
-    "bot_name": "useful_strategy_name",
+    "bot_name": "picasso_rsi_bb",
     "initial_state": "running",
     "force_entry_enable": false,
     "internals": {

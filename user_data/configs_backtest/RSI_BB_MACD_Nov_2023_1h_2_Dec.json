@@ -1,12 +1,11 @@
 {
-    "max_open_trades": -1,
+    "max_open_trades": 20,
     "stake_currency": "USDT",
-    "stake_amount": 20,
+    "stake_amount": 30,
     "tradable_balance_ratio": 0.99,
     "fiat_display_currency": "USD",
     "dry_run": true,
     "dry_run_wallet": 1000,
-    "timeframe": "1h",
     "cancel_open_orders_on_exit": false,
     "trading_mode": "futures",
     "margin_mode": "isolated",
@@ -252,11 +251,15 @@
         "verbosity": "error",
         "enable_openapi": false,
         "jwt_secret_key": "50afb5e35bd5696a187badb5537dfc2b26q23d5226143827b4108e1de793d92c",
-        "CORS_origins": [],
-        "username": "user",
-        "password": "password"
+        "CORS_origins": [
+            "http://127.0.0.1:8080",
+            "http://localhost:8080",
+            "http://sunfreq.ddns.net:8080"
+        ],
+        "username": "freqtrader",
+        "password": "testing@123"
     },
-    "bot_name": "useful_strategy_name",
+    "bot_name": "picasso_rsi_bb",
     "initial_state": "running",
     "force_entry_enable": false,
     "internals": {

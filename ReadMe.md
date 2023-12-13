@@ -30,6 +30,7 @@
 * ```f backtesting --config user_data/backtest_configs/picasso_rsi_bb_binance.json --strategy-list RSI_BB_MACD_Nov_2023_1h_2_Dec --timerange 20191230-20230930 -i 1h```
 * ```f backtesting --strategy-list TSPredict --config ./user_data/configs_backtest/config.json --timerange 20191230-20230930 -i 5m ```
 * ```f backtesting --strategy-list EDTMA_Long_Short_prot_CE_1h_3Lev_3mt_Dec21_np_April CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16 CE_CTI_STC_EMA_1h_V5_4x_3mt_Jan16_np_Jan20 --config ./user_data/backtest_configs/picasso_EDTMA.json --timerange 20191230-20230930 -i 1h```
+* ```f backtesting --strategy-list HPStrategy --config ./user_data/configs_backtest/config.json --timerange 20231201-```
 
 ## To build new docker with dependencies
 ```d compose build --pull```
@@ -49,9 +50,9 @@
 ```d compose up -d```
 
 ## To convert data into freqtrade files
-```freqtrade convert-trade-data --exchange kraken --format-from kraken_csv --format-to feather```
+```f convert-trade-data --exchange kraken --format-from kraken_csv --format-to feather```
 #### Convert trade data to different ohlcv timeframes
-```freqtrade trades-to-ohlcv -p ETH/USDT ETH/USD ETC/USD --exchange kraken -t 1m 5m 15m 1h```
+```f trades-to-ohlcv -p ETH/USDT ETH/USD ETC/USD --exchange kraken -t 1m 5m 15m 1h```
 #### To list downloaded data
 ```d compose run freqtrade list-data -p ETH/USDT```
 
