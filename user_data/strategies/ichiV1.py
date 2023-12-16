@@ -69,7 +69,7 @@ class ichiV1(IStrategy):
         dataframe['fan_magnitude'] = dataframe['trend_close_1h'] / dataframe['trend_close_8h']
         dataframe['fan_magnitude_gain'] = dataframe['fan_magnitude'] / dataframe['fan_magnitude'].shift(1)
         ichimoku = ftt.ichimoku(dataframe, conversion_line_period=20, base_line_periods=60, laggin_span=120, displacement=30)
-        dataframe['chikou_span'] = ichimoku['chikou_span']
+        # dataframe['chikou_span'] = ichimoku['chikou_span']
         dataframe['tenkan_sen'] = ichimoku['tenkan_sen']
         dataframe['kijun_sen'] = ichimoku['kijun_sen']
         dataframe['senkou_a'] = ichimoku['senkou_span_a']
