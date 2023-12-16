@@ -7,6 +7,6 @@
 # echo "${strategies}"
 
 strategies_folder='./user_data/strategies/'
-stratigies=$(find "$strategies_folder" -maxdepth 1 -type f -name "*.py" -exec basename {} \; | sed 's/\.[^.]*$//')
+stratigies=$(find "$strategies_folder" -maxdepth 1 -type f -name "*.py" ! -name "__init__.py" -exec basename {} \; | sed 's/\.[^.]*$//')
 
-freqtrade backtesting --strategy-list $stratigies --config ./user_data/configs_backtest/config.json --timerange 20191230-20230930
+freqtrade backtesting --strategy-list $stratigies --config ./user_data/configs_backtest/config.json --timerange 20230101-20230930

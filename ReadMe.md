@@ -64,3 +64,9 @@ freqtrade backtesting --strategy-list strat1 strat2 --config ./user_data/backtes
 
 ## To hpyeroptimize
 * ```f hyperopt --config user_data/config-static-tutorial.json --hyperopt-loss SharpeHyperOptLoss --spaces buy sell --strategy SMAOffsetProtectOptV1 --epochs 10 --timerange=20230605- --disable-param-export```
+
+## To check for lookahead bias
+* ```f lookahead-analysis --config ./user_data/configs_backtest/config.json --timerange 20230101-20231201 --strategy ichiV1```
+
+## To run in webserver mode to visualize backtest results
+* ```f webserver --config ./user_data/configs_backtest/config.json```
