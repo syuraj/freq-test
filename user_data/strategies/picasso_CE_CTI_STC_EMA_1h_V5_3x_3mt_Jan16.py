@@ -45,14 +45,14 @@ def coral_trend(df, ema_period=10, cci_period=20, cci_threshold=100):
     # Calculate the exponential moving averages (EMAs)
     df['ema_fast'] = df['close'].ewm(span=ema_period, adjust=False).mean()
     df['ema_slow'] = df['close'].ewm(span=ema_period*2, adjust=False).mean()
-    
+
     # Calculate the Commodity Channel Index (CCI)
     df['cci'] = ((df['close'] - df['close'].rolling(cci_period).mean()) / df['close'].rolling(cci_period).std()) * np.sqrt(cci_period)
-    
+
     # Determine the trend based on the EMAs and CCI
     df['coral_trend'] = np.where((df['ema_fast'] > df['ema_slow']) & (df['cci'] < -cci_threshold), 1, 0)
     df['coral_trend'] = np.where((df['ema_fast'] < df['ema_slow']) & (df['cci'] > cci_threshold), -1, df['coral_trend'])
-    
+
     return df
 
 # Chandalier Exit
@@ -65,7 +65,7 @@ def chandelier_exit(df, atr_period=2, rolling_value=10, atr_mult=2.3):
     # Calculate the average true range (ATR)
     df['TR'] = df[['high', 'low', 'close']].apply(lambda x: max(x) - min(x), axis=1)
     df['atr'] = df['TR'].rolling(atr_period).mean()
-    
+
     # Calculate the Chandelier Exit (ATR Trailing Stop)
     df['chandelier_exit_sl'] = df['close'] - df['atr'] * atr_mult
     df['chandelier_exit_tp'] = df['close'] + df['atr'] * atr_mult
@@ -86,24 +86,24 @@ def stc_indicator(df, macd_fast=12, macd_slow=26, macd_signal=9, stoch_k=14, sto
     # Calculate the MACD
     df['macd'] = df['close'].ewm(span=macd_fast, adjust=False).mean() - df['close'].ewm(span=macd_slow, adjust=False).mean()
     df['macd_signal'] = df['macd'].ewm(span=macd_signal, adjust=False).mean()
-    
+
     # Calculate the Stochastic Oscillator
     df['stoch_k'] = (df['close'] - df['low'].rolling(stoch_k).min()) / (df['high'].rolling(stoch_k).max() - df['low'].rolling(stoch_k).min()) * 100
     df['stoch_d'] = df['stoch_k'].rolling(stoch_d).mean()
-    
+
     # Determine the trend based on the MACD and Stochastic Oscillator
     df['stc_trend'] = np.where((df['macd'] > df['macd_signal']) & (df['stoch_k'] > df['stoch_d']), 1, 0)
     df['stc_trend'] = np.where((df['macd'] < df['macd_signal']) & (df['stoch_k'] < df['stoch_d']), -1, df['stc_trend'])
-    
+
     return df
 
 # ############################################################################################################################################################################################
 
-class CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16(IStrategy):
+class picasso_CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16(IStrategy):
 
 
     # class CE_CTI_STC_EMA_1h_V4_4x_4mt_Jan6(IStrategy):
-    
+
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
     INTERFACE_VERSION = 3
@@ -272,7 +272,7 @@ class CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16(IStrategy):
             trailing_stop_positive = 0.014
             trailing_stop_positive_offset = 0.04
             trailing_only_offset_is_reached = True
-    
+
     '''
 
     # Minimal ROI designed for the strategy.
@@ -312,14 +312,14 @@ class CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16(IStrategy):
     # Strategy parameters
     adx_long = IntParameter(10, 50, default=20, space="buy", optimize = True)
     adx_short = IntParameter(10, 50, default=18, space="buy", optimize = True)
-    
+
     # ct_cci_period = IntParameter(5, 75, default=10, space="buy")
     # ct_cci_threshold = IntParameter(1, 200, default=88, space="buy")
     # ct_ema_period = IntParameter(5, 100, default=28, space="buy")
 
 
     '''
-    
+
     '''
 
     stc_macd_fast = IntParameter(5, 25, default=11, space="buy")
@@ -369,8 +369,8 @@ class CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16(IStrategy):
             }
         ]
 
- 
-    
+
+
     # ema_long = IntParameter(50, 250, default=100, space="buy")
     # ema_short = IntParameter(50, 250, default=100, space="buy")
 
@@ -389,7 +389,7 @@ class CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16(IStrategy):
         'entry': 'GTC',
         'exit': 'GTC'
     }
-    
+
     @property
     def plot_config(self):
         return {
@@ -411,7 +411,7 @@ class CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16(IStrategy):
         }
 
     def informative_pairs(self):
-        
+
         return []
 
     # def custom_stoploss(self, pair: str, trade: Trade, current_time: datetime,
@@ -444,8 +444,8 @@ class CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16(IStrategy):
     #     return stoploss_from_open(sl_profit, current_profit, is_short=trade.is_short)
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        
-        
+
+
         # long_coral_trend = coral_trend(df=dataframe, ema_period = self.ct_ema_period.value, cci_period=self.ct_cci_period.value, cci_threshold = self.ct_cci_threshold.value)
 
         # dataframe['ct_ema_fast']= long_coral_trend['ema_fast']
@@ -483,7 +483,7 @@ class CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16(IStrategy):
         dataframe['adx'] = ta.ADX(dataframe)
 
 
-        # # EMA - Exponential Moving Average       
+        # # EMA - Exponential Moving Average
         dataframe['ema_long'] = ta.EMA(dataframe, timeperiod=100)
         dataframe['ema_short'] = ta.EMA(dataframe, timeperiod=100)
         dataframe['volume_mean_22'] = dataframe['volume'].rolling(22).mean().shift(1)
@@ -493,7 +493,7 @@ class CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16(IStrategy):
         return dataframe
 
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        
+
         conditions_long = []
         conditions_short = []
         dataframe.loc[:, 'enter_tag'] = ''
@@ -626,7 +626,7 @@ class CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16(IStrategy):
         return dataframe
 
     def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        
+
         conditions_long = []
         conditions_short = []
         dataframe.loc[:, 'exit_tag'] = ''
@@ -638,13 +638,13 @@ class CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16(IStrategy):
 
         sell_2 = (
                 (dataframe['close'].shift(-1) >= dataframe['ce_chandelier_exit_sl_short']) &
-                
+
                 (dataframe['volume'] > 0)
         )
 
         sell_3 = (
                 (dataframe['close'].shift(-1) >= dataframe['ce_chandelier_exit_tp']) &
-                
+
                 (dataframe['volume'] > 0)
         )
 
@@ -682,4 +682,3 @@ class CE_CTI_STC_EMA_1h_V5_3x_3mt_Jan16(IStrategy):
                  **kwargs) -> float:
 
         return self.leverage_num.value
-    

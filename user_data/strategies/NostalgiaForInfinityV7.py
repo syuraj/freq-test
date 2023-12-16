@@ -8,8 +8,8 @@ from pandas import DataFrame, Series
 from functools import reduce
 from freqtrade.persistence import Trade
 from datetime import datetime, timedelta
-from technical.indicators import zema
-
+# from technical.indicators import zema
+import talib.abstract as ta
 
 ###########################################################################################################
 ##                NostalgiaForInfinityV7 by iterativ                                                     ##
@@ -1527,7 +1527,7 @@ class NostalgiaForInfinityV7(IStrategy):
         dataframe['chop']= qtpylib.chopiness(dataframe, 14)
 
         # Zero-Lag EMA
-        dataframe['zema'] = zema(dataframe, period=61)
+        dataframe['zema'] = ta.DEMA(dataframe, period=61)
 
         # Dip protection
         dataframe['tpct_change_0']   = self.top_percent_change(dataframe,0)
