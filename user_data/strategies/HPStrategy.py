@@ -97,9 +97,9 @@ class HPStrategy(IStrategy):
         pairs = self.dp.current_whitelist()
         informative_pairs = [(pair, '1h') for pair in pairs]
         if self.config['stake_currency'] in ['USDT', 'BUSD', 'USDC', 'DAI', 'TUSD', 'PAX', 'USD', 'EUR', 'GBP']:
-            btc_info_pair = f"BTC/{self.config['stake_currency']}"
+            btc_info_pair = f"BTC/{self.config['stake_currency']}:{self.config['stake_currency']}"
         else:
-            btc_info_pair = 'BTC/USDT'
+            btc_info_pair = 'BTC/USDT:USDT'
         informative_pairs.append((btc_info_pair, self.timeframe))
         informative_pairs.append((btc_info_pair, self.inf_1h))
         return informative_pairs
@@ -178,9 +178,9 @@ class HPStrategy(IStrategy):
         " cnum = 64\n        price_range = np.linspace(data_last_bbars['low'].min(), data_last_bbars['high'].max(), num=cnum)\n        vol_profile = pd.cut(data_last_bbars['close'], bins=price_range, include_lowest=True, labels=range(cnum - 1))\n        vol_by_price = data_last_bbars.groupby(vol_profile)['volume'].sum()\n        poc_index = vol_by_price.idxmax()\n        dataframe['poc'] = price_range[poc_index] if poc_index >= 0 else np.nan\n        percent = 70\n        va_threshold = vol_by_price.sum() * (percent / 100)\n        cum_vol = vol_by_price.sort_values(ascending=False).cumsum()\n        value_area = cum_vol[cum_vol <= va_threshold].index\n        dataframe['va_high'] = price_range[value_area.max()] if not value_area.empty else np.nan\n        dataframe['va_low'] = price_range[value_area.min()] if not value_area.empty else np.nan\n        "
         pair = metadata['pair']
         if self.config['stake_currency'] in ['USDT', 'BUSD']:
-            btc_info_pair = f"BTC/{self.config['stake_currency']}"
+            btc_info_pair = f"BTC/{self.config['stake_currency']}:{self.config['stake_currency']}"
         else:
-            btc_info_pair = 'BTC/USDT'
+            btc_info_pair = 'BTC/USDT:USDT'
         btc_info_tf = self.dp.get_pair_dataframe(btc_info_pair, self.inf_1h)
         btc_info_tf = self.info_tf_btc_indicators(btc_info_tf, metadata)
         dataframe = merge_informative_pair(dataframe, btc_info_tf, self.timeframe, self.inf_1h, ffill=True)

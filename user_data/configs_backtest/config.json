@@ -34,6 +34,7 @@
         "name": "binance",
         "key": "",
         "secret": "",
+        "skip_pair_validation": true,
         "ccxt_config": {
             "enableRateLimit": true
         },
@@ -198,7 +199,8 @@
             "number_assets": 40,
             "sort_key": "quoteVolume",
             "min_value": 0,
-            "refresh_period": 1800
+            "refresh_period": 1800,
+            "allow_inactive": true
         },
         {
             "method": "AgeFilter",

@@ -218,11 +218,6 @@
             "refresh_period": 3600
         },
         {
-            "method": "PerformanceFilter",
-            "minutes": 14400,
-            "min_profit": 0.015
-        },
-        {
             "method": "ShuffleFilter"
         }
     ],
