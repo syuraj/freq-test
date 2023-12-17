@@ -4,7 +4,7 @@ services:
   freqtrade_ichiV1:
     image: freqtradeorg/freqtrade:stable
     restart: unless-stopped
-    container_name: freqtrade_ichiV1
+    container_name: ichiV1
     volumes:
       - "./user_data:/freqtrade/user_data"
     ports:
@@ -16,69 +16,3 @@ services:
       --config /freqtrade/user_data/configs/config.json
       --strategy ichiV1
 
-  Elasticsearch:
-    image: elasticsearch:7.16.2
-    container_name: elasticsearch
-    restart: unless-stopped
-    volumes:
-      - ./elk/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - elastic_data:/usr/share/elasticsearch/data/
-    environment:
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-      discovery.type: single-node
-      ELASTIC_PASSWORD: "##P48#fEO?m5aV8dZ"
-    ports:
-      - '9200:9200'
-      - '9300:9300'
-    networks:
-      - elk
-
-  Logstash:
-    image: logstash:7.16.2
-    container_name: logstash
-    restart: unless-stopped
-    volumes:
-      - ./elk/logstash/:/logstash_dir
-      - ./user_data:/user_data
-    command: logstash -f /logstash_dir/logstash.conf
-    depends_on:
-      - Elasticsearch
-    ports:
-      - '9600:9600'
-    environment:
-      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-      ELASTICSEARCH_USERNAME: "elastic"
-      ELASTICSEARCH_PASSWORD: "##P48#fEO?m5aV8dZ"
-    networks:
-      - elk
-
-  Kibana:
-    image: kibana:7.16.2
-    container_name: kibana
-    restart: unless-stopped
-    ports:
-      - '5601:5601'
-    environment:
-      ELASTICSEARCH_URL: http://elasticsearch:9200
-      ELASTICSEARCH_USERNAME: elastic
-      ELASTICSEARCH_PASSWORD: "##P48#fEO?m5aV8dZ"
-    depends_on:
-      - Elasticsearch
-    networks:
-      - elk
-
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    volumes:
-      - "grafana-storage:/var/lib/grafana"
-      - "./user_data:/user_data"
-
-volumes:
-  grafana-storage:
-  elastic_data: {}
-
-networks:
-  elk:
