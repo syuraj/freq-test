@@ -11,9 +11,7 @@ from pandas import DataFrame
 from datetime import datetime
 from typing import Optional, Union
 
-
 from freqtrade.persistence import Trade
-
 from freqtrade.strategy import (BooleanParameter, CategoricalParameter, stoploss_from_open, DecimalParameter,
                                 IntParameter, IStrategy, informative, merge_informative_pair)
 

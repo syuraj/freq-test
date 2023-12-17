@@ -10,5 +10,5 @@ timerange="20230101-20231201"
 
 for strategy in $stratigies; do
     echo "Starting backtest on $strategy ...."
-    freqtrade backtesting --config ./user_data/configs_backtest/config_basic.json --timerange $timerange --strategy $strategy --cache none 3>&1 1>&2 2>&3 # | grep -v "INFO"
+    freqtrade backtesting --config ./user_data/configs_backtest/config_basic.json --timerange $timerange --strategy $strategy --cache none 3>&1 1>&2 2>&3 | grep -v "INFO"
 done

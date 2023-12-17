@@ -34,7 +34,7 @@
         "name": "binance",
         "key": "",
         "secret": "",
-        "skip_pair_validation": "true",
+        "skip_pair_validation": true,
         "ccxt_config": {
             "enableRateLimit": true
         },
