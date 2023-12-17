@@ -25,7 +25,7 @@ services:
     volumes:
       - ./elk/logstash/:/logstash_dir
       - ../user_data:/user_data
-    command: logstash -f /logstash_dir/logstash.conf --path.settings /logstash_dir/
+    command: logstash --path.settings /logstash_dir/
     depends_on:
       - Elasticsearch
     ports:
