@@ -1,3 +1,6 @@
 
 - pipeline.id: main
-  path.config: "/logstash_dir/pipelines/logstash-1.conf"
+  path.config: "/logstash_dir/pipelines/logfile-pipeline-1.conf"
+
+- pipeline.id: fielbeat1
+  path.config: "/logstash_dir/pipelines/filebeat-pipeline-1.conf"

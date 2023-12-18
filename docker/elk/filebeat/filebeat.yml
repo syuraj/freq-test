@@ -1,0 +1,17 @@
+
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /logs/*.log
+  encoding: utf-8
+
+processors:
+  - convert:
+      fields:
+        - {from: "host.name", to: "host", type: "string"}
+      ignore_missing: true
+      fail_on_error: false
+
+output.logstash:
+  hosts: ["sunfreq2.ddns.net:5044"]

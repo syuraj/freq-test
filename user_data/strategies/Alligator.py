@@ -29,8 +29,6 @@ class Alligator(IStrategy):
     adxfilter = IntParameter(15, 30, default=20, space="buy")
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        print("printing self.slowma")
-        print(self.slowma)
         dataframe['ma_slow'] = dataframe['close'].rolling(window=self.slowma.value).mean()
         dataframe['ma_medium'] = dataframe['close'].rolling(window=self.mediumma.value).mean()
         dataframe['ma_fast'] = dataframe['close'].rolling(window=self.fastma.value).mean()
@@ -56,7 +54,6 @@ class Alligator(IStrategy):
             (dataframe['adx'] > self.adxfilter.value),
             'enter_short'
         ] = 1
-        print(dataframe)
 
         return dataframe
 

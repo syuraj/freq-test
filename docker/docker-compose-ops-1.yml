@@ -1,0 +1,24 @@
+---
+version: '3'
+services:
+  Filebeat:
+    image: docker.elastic.co/beats/filebeat:8.11.3
+    user: root
+    container_name: filebeat
+    restart: unless-stopped
+    volumes:
+      - "../../filebeat-data/data:/usr/share/filebeat/data:rw"
+      - "./elk/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+      - "../user_data/logs:/logs:ro"
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - "grafana-storage:/var/lib/grafana"
+      - "../user_data:/user_data"
+
+volumes:
+  grafana-storage:

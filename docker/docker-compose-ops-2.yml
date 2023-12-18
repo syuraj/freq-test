@@ -29,7 +29,7 @@ services:
     depends_on:
       - Elasticsearch
     ports:
-      - '9600:9600'
+      - '5044:5044'
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     networks:
