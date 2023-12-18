@@ -10,6 +10,7 @@ processors:
   - convert:
       fields:
         - {from: "host.name", to: "host", type: "string"}
+        - {from: "log.file.path", to: "path", type: "string"}
       ignore_missing: true
       fail_on_error: false
 
