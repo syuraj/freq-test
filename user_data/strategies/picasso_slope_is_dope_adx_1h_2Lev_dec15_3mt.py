@@ -23,9 +23,8 @@ class picasso_slope_is_dope_adx_1h_2Lev_dec15_3mt(IStrategy):
     '''
     max-trades : 3
 
-
-            freqtrade backtesting --strategy slope_is_dope_adx_1h_2Lev_dec14_3mt -i 1h --export trades --breakdown month --timerange 20211101-20221208
-            freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces all --strategy slope_is_dope_adx_1h_2Lev_dec14_3mt -e 155 --ignore-missing-spaces -i 1h --timerange 20220101-20221208 --random-state 10102
+            freqtrade backtesting --strategy picasso_slope_is_dope_adx_1h_2Lev_dec15_3mt -i 1h --export trades --breakdown month --timerange 20211101-20221208
+            freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces all --strategy picasso_slope_is_dope_adx_1h_2Lev_dec15_3mt -e 155 --ignore-missing-spaces -i 1h --timerange 20220101-20221208 --random-state 10102
 
                 =========================================================== ENTER TAG STATS ===========================================================
                 |   TAG |   Entries |   Avg Profit % |   Cum Profit % |   Tot Profit USDT |   Tot Profit % |   Avg Duration |   Win  Draw  Loss  Win% |

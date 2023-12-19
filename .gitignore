@@ -10,3 +10,4 @@ user_data/plot
 
 **/backtest_results/*
 **/backtest_results_2/*
+**/hyperopt_results/*
