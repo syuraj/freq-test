@@ -3,7 +3,7 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-    - /logs/*.log
+    - /logs/*.log*
   encoding: utf-8
 
 processors:

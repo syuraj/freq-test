@@ -1,7 +1,7 @@
 ---
 version: '3'
 services:
-  freqtrade_hippo_SMAOffset:
+  hippo_SMAOffset:
     # image: freqtrade_custom
     image: freqtradeorg/freqtrade:stable
     # image: freqtradeorg/freqtrade:develop
@@ -21,7 +21,7 @@ services:
     #   context: .
     #   dockerfile: "./docker/Dockerfile.custom"
     restart: unless-stopped
-    container_name: freqtrade_hippo_SMAOffset
+    container_name: hippo_SMAOffset
     volumes:
       - "./user_data:/freqtrade/user_data:rw"
     ports:
@@ -34,10 +34,10 @@ services:
       --config /freqtrade/user_data/configs/config.json
       --strategy SMAOffset_Hippocritical_dca
 
-  freqtrade_picasso_rsi_bb:
+  picasso_rsi_bb:
     image: freqtradeorg/freqtrade:stable
     restart: unless-stopped
-    container_name: freqtrade_picasso_rsi_bb
+    container_name: picasso_rsi_bb
     volumes:
       - "./user_data:/freqtrade/user_data:rw"
     ports:
@@ -49,10 +49,10 @@ services:
       --config /freqtrade/user_data/configs/config.json
       --strategy RSI_BB_MACD_Nov_2023_1h_2_Dec
 
-  freqtrade_NostalgiaForInfinityV7:
+  NostalgiaForInfinityV7:
     image: freqtradeorg/freqtrade:stable
     restart: unless-stopped
-    container_name: freqtrade_NostalgiaForInfinityV7
+    container_name: NostalgiaForInfinityV7
     volumes:
       - "./user_data:/freqtrade/user_data:rw"
     ports:
@@ -64,10 +64,10 @@ services:
       --config /freqtrade/user_data/configs/config.json
       --strategy NostalgiaForInfinityV7
 
-  freqtrade_HPStrategy:
+  HPStrategy:
     image: freqtradeorg/freqtrade:stable
     restart: unless-stopped
-    container_name: freqtrade_HPStrategy
+    container_name: HPStrategy
     volumes:
       - "./user_data:/freqtrade/user_data:rw"
     ports:
@@ -76,5 +76,5 @@ services:
       trade
       --logfile /freqtrade/user_data/logs/HPStrategy.log
       --db-url sqlite:////freqtrade/user_data/dbs/HPStrategy.sqlite
-      --config /freqtrade/user_data/configs/okx.json
+      --config /freqtrade/user_data/configs/config.json
       --strategy HPStrategy
