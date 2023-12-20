@@ -1,7 +1,13 @@
 #!/bin/bash
 
 if [[ $(yq eval ".services.$1" ./docker/docker-compose-1.yml) != "null" ]]; then
-    ssh -o ConnectTimeout=10 ubuntu@sunfreq.ddns.net "bash -lc \"sudo docker stop $1 \"" && source ./scripts/deploy-all.sh
+    node='ubuntu@sunfreq.ddns.net'
+    compose_yml_path="./docker/docker-compose-1.yml"
 else
-    ssh -o ConnectTimeout=10 ubuntu@sunfreq2.ddns.net "bash -lc \"sudo docker stop $1 \"" && source ./scripts/deploy-all.sh
+    node='ubuntu@sunfreq2.ddns.net'
+    compose_yml_path="./docker/docker-compose-2.yml"
 fi
+
+rsync -rvth --progress --filter=':- .gitignore' ./ $node:~/freq-test --rsync-path="sudo rsync"
+
+ssh -t $node "bash -lic \"cd ~/freq-test; d compose -f ${compose_yml_path} build; d compose -f ${compose_yml_path} up -d; d ps\""
