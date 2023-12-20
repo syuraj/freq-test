@@ -7,25 +7,25 @@ class TwoMovingAveragesStrategy(IStrategy):
     stoploss = -0.05
     timeframe = "1h"
 
-    # Buy hyperspace params:
-    buy_params = {
-        "adx_long": 39,
-        "adx_short": 20,
-        "close_market_shift_long": 6,
-        "close_market_shift_short": 9,
-        "entryMA_tp": 8,
-        "fastMA_tp": 16,
-        "marketMA_tp": 97,
-        "rsi_tp": 10,
-        "slowMA_tp": 57,
-        "leverage_num": 2,  # value loaded from strategy
-    }
+    # # Buy hyperspace params:
+    # buy_params = {
+    #     "adx_long": 39,
+    #     "adx_short": 20,
+    #     "close_market_shift_long": 6,
+    #     "close_market_shift_short": 9,
+    #     "entryMA_tp": 8,
+    #     "fastMA_tp": 16,
+    #     "marketMA_tp": 97,
+    #     "rsi_tp": 10,
+    #     "slowMA_tp": 57,
+    #     "leverage_num": 2,  # value loaded from strategy
+    # }
 
-    # Sell hyperspace params:
-    sell_params = {
-        "last_lowest_rolling_long": 9,
-        "last_lowest_rolling_short": 9,
-    }
+    # # Sell hyperspace params:
+    # sell_params = {
+    #     "last_lowest_rolling_long": 9,
+    #     "last_lowest_rolling_short": 9,
+    # }
 
     protection_params = {
         "max_allowed_drawdown": 0.45,

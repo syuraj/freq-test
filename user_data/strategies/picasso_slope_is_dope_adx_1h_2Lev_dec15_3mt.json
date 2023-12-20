@@ -1,0 +1,50 @@
+{
+  "strategy_name": "picasso_slope_is_dope_adx_1h_2Lev_dec15_3mt",
+  "params": {
+    "buy": {
+      "leverage_num": 2,
+      "adx_long": 24,
+      "adx_short": 28,
+      "close_market_shift_long": 13,
+      "close_market_shift_short": 11,
+      "entryMA_tp": 8,
+      "fastMA_tp": 30,
+      "marketMA_tp": 125,
+      "rsi_tp": 19,
+      "slowMA_tp": 31
+    },
+    "sell": {
+      "last_lowest_rolling_long": 9,
+      "last_lowest_rolling_short": 20
+    },
+    "protection": {
+      "max_allowed_drawdown": 0.4,
+      "max_drawdown_lookback": 26,
+      "max_drawdown_stop_duration": 62,
+      "max_drawdown_trade_limit": 20,
+      "stoploss_guard_lookback": 48,
+      "stoploss_guard_stop_duration": 213,
+      "stoploss_guard_trade_limit": 8
+    },
+    "roi": {
+      "0": 0.112,
+      "461": 0.079,
+      "1085": 0.033,
+      "2446": 0
+    },
+    "stoploss": {
+      "stoploss": -0.193
+    },
+    "trailing": {
+      "trailing_stop": true,
+      "trailing_stop_positive": 0.01,
+      "trailing_stop_positive_offset": 0.037,
+      "trailing_only_offset_is_reached": true
+    },
+    "max_open_trades": {
+      "max_open_trades": -1
+    }
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2023-12-19 08:10:35.947439+00:00"
+}

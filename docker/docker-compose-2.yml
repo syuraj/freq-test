@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     container_name: ichiV1
     volumes:
-      - "./user_data:/freqtrade/user_data"
+      - "../user_data:/freqtrade/user_data"
     ports:
       - "8080:8080"
     command: >

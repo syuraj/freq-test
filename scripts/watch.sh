@@ -11,7 +11,7 @@ if [ "$#" -eq 0 ]; then
     done
 fi
 
-if [ $(docker compose -f ./docker-compose-1.yml config --services | grep -m 1 $1) ]; then
+if [ $(docker compose -f ./docker/docker-compose-1.yml config --services | grep -m 1 $1) ]; then
     ssh -o ConnectTimeout=10 ubuntu@sunfreq.ddns.net "bash -lc \" sudo docker logs --tail 100 -f $1 && sleep infinity \""
 else
     ssh -o ConnectTimeout=10 ubuntu@sunfreq2.ddns.net "bash -lc \" sudo docker logs --tail 100 -f $1 && sleep infinity \""
