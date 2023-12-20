@@ -4,47 +4,47 @@
     "buy": {
       "leverage_num": 2,
       "adx_long": 24,
-      "adx_short": 28,
-      "close_market_shift_long": 13,
-      "close_market_shift_short": 11,
-      "entryMA_tp": 8,
-      "fastMA_tp": 30,
-      "marketMA_tp": 125,
-      "rsi_tp": 19,
-      "slowMA_tp": 31
+      "adx_short": 23,
+      "close_market_shift_long": 7,
+      "close_market_shift_short": 10,
+      "entryMA_tp": 5,
+      "fastMA_tp": 15,
+      "marketMA_tp": 120,
+      "rsi_tp": 12,
+      "slowMA_tp": 46
     },
     "sell": {
-      "last_lowest_rolling_long": 9,
-      "last_lowest_rolling_short": 20
+      "last_lowest_rolling_long": 8,
+      "last_lowest_rolling_short": 9
     },
     "protection": {
-      "max_allowed_drawdown": 0.4,
-      "max_drawdown_lookback": 26,
-      "max_drawdown_stop_duration": 62,
-      "max_drawdown_trade_limit": 20,
-      "stoploss_guard_lookback": 48,
-      "stoploss_guard_stop_duration": 213,
-      "stoploss_guard_trade_limit": 8
+      "max_allowed_drawdown": 0.23,
+      "max_drawdown_lookback": 74,
+      "max_drawdown_stop_duration": 110,
+      "max_drawdown_trade_limit": 13,
+      "stoploss_guard_lookback": 11,
+      "stoploss_guard_stop_duration": 24,
+      "stoploss_guard_trade_limit": 16
     },
     "roi": {
-      "0": 0.112,
-      "461": 0.079,
-      "1085": 0.033,
-      "2446": 0
+      "0": 0.581,
+      "262": 0.13,
+      "580": 0.069,
+      "1923": 0
     },
     "stoploss": {
-      "stoploss": -0.193
+      "stoploss": -0.187
     },
     "trailing": {
       "trailing_stop": true,
-      "trailing_stop_positive": 0.01,
-      "trailing_stop_positive_offset": 0.037,
-      "trailing_only_offset_is_reached": true
+      "trailing_stop_positive": 0.025,
+      "trailing_stop_positive_offset": 0.048,
+      "trailing_only_offset_is_reached": false
     },
     "max_open_trades": {
-      "max_open_trades": -1
+      "max_open_trades": 6
     }
   },
   "ft_stratparam_v": 1,
-  "export_time": "2023-12-19 08:10:35.947439+00:00"
+  "export_time": "2023-12-20 04:55:33.661573+00:00"
 }

@@ -1,11 +1,16 @@
 from freqtrade.strategy.interface import IStrategy
 from pandas import DataFrame
+from freqtrade.strategy import (BooleanParameter, CategoricalParameter, stoploss_from_open, DecimalParameter,
+                                IntParameter, IStrategy, informative, merge_informative_pair)
 
 class TwoMovingAveragesStrategy(IStrategy):
     # Define strategy parameters
     minimal_roi = {"0": 0.01}
     stoploss = -0.05
-    timeframe = "1h"
+    timeframe = "5m"
+
+    fastma = IntParameter(11, 15, default=10, space="buy")
+    slowma = IntParameter(45, 55, default=50, space="buy")
 
     # # Buy hyperspace params:
     # buy_params = {
@@ -38,8 +43,8 @@ class TwoMovingAveragesStrategy(IStrategy):
     }
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        dataframe["ma_fast"] = dataframe["close"].rolling(window=10).mean()
-        dataframe["ma_slow"] = dataframe["close"].rolling(window=50).mean()
+        dataframe["ma_fast"] = dataframe["close"].rolling(window=self.fastma.value).mean()
+        dataframe["ma_slow"] = dataframe["close"].rolling(window=self.slowma.value).mean()
 
         return dataframe
 

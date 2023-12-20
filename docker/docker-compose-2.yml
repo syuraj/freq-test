@@ -16,3 +16,18 @@ services:
       --config /freqtrade/user_data/configs/config.json
       --strategy ichiV1
 
+  picasso_RSI_BB_MACD_Dec_2023_15m_3_rls:
+    image: freqtradeorg/freqtrade:stable
+    restart: unless-stopped
+    container_name: picasso_RSI_BB_MACD_Dec_2023_15m_3_rls
+    volumes:
+      - "../user_data:/freqtrade/user_data"
+    ports:
+      - "8081:8080"
+    command: >
+      trade
+      --logfile /freqtrade/user_data/logs/picasso_RSI_BB_MACD_Dec_2023_15m_3_rls.log
+      --db-url sqlite:////freqtrade/user_data/dbs/picasso_RSI_BB_MACD_Dec_2023_15m_3_rls.sqlite
+      --config /freqtrade/user_data/configs/picasso_config_forwardTesting_liveTrade.json
+      --strategy picasso_RSI_BB_MACD_Dec_2023_15m_3_rls
+

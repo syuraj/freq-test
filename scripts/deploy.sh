@@ -10,4 +10,4 @@ fi
 
 rsync -rvth --progress --filter=':- .gitignore' ./ $node:~/freq-test --rsync-path="sudo rsync"
 
-ssh -t $node "bash -lic \"cd ~/freq-test; d compose -f ${compose_yml_path} build; d compose -f ${compose_yml_path} up -d; d ps\""
+ssh -t $node "bash -lic \"cd ~/freq-test; d stop ${1}; d compose -f ${compose_yml_path} build; d compose -f ${compose_yml_path} up -d; d ps\""

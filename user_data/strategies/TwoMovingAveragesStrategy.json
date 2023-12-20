@@ -1,28 +1,31 @@
 {
   "strategy_name": "TwoMovingAveragesStrategy",
   "params": {
-    "buy": {},
+    "buy": {
+      "fastma": 14,
+      "slowma": 54
+    },
     "sell": {},
     "protection": {},
     "roi": {
-      "0": 0.247,
-      "157": 0.08399999999999999,
-      "324": 0.031,
-      "1748": 0
+      "0": 0.572,
+      "292": 0.225,
+      "760": 0.087,
+      "2155": 0
     },
     "stoploss": {
-      "stoploss": -0.037
+      "stoploss": -0.292
     },
     "trailing": {
       "trailing_stop": true,
-      "trailing_stop_positive": 0.08,
-      "trailing_stop_positive_offset": 0.08700000000000001,
-      "trailing_only_offset_is_reached": true
+      "trailing_stop_positive": 0.289,
+      "trailing_stop_positive_offset": 0.347,
+      "trailing_only_offset_is_reached": false
     },
     "max_open_trades": {
       "max_open_trades": 4
     }
   },
   "ft_stratparam_v": 1,
-  "export_time": "2023-12-20 02:17:29.359848+00:00"
+  "export_time": "2023-12-20 05:07:32.915593+00:00"
 }
