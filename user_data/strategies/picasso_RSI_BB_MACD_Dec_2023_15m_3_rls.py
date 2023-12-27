@@ -53,7 +53,7 @@ class picasso_RSI_BB_MACD_Dec_2023_15m_3_rls(IStrategy):
     INTERFACE_VERSION = 3
 
     # Optimal timeframe for the strategy.
-    timeframe = '5m'
+    timeframe = '15m'
 
     # Can this strategy go short?
     can_short = True

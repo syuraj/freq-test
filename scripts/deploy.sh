@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ "$#" != 1 ]] ; then
+    echo "Strategy name required. or use deploy-all.sh"
+    exit 1
+fi
+
 if [[ $(yq eval ".services.$1" ./docker/docker-compose-1.yml) != "null" ]]; then
     node='ubuntu@sunfreq.ddns.net'
     compose_yml_path="./docker/docker-compose-1.yml"
