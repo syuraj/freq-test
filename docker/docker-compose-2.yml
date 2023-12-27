@@ -60,3 +60,18 @@ services:
       --db-url sqlite:////freqtrade/user_data/dbs/NotAnotherSMAOffsetStrategy.sqlite
       --config /freqtrade/user_data/configs/config.json
       --strategy NotAnotherSMAOffsetStrategy
+
+  HPStrategy_12_27:
+    image: freqtradeorg/freqtrade:stable
+    restart: unless-stopped
+    container_name: HPStrategy_12_27
+    volumes:
+      - "../user_data:/freqtrade/user_data"
+    ports:
+      - "8084:8080"
+    command: >
+      trade
+      --logfile /freqtrade/user_data/logs/HPStrategy_12_27.log
+      --db-url sqlite:////freqtrade/user_data/dbs/HPStrategy_12_27.sqlite
+      --config /freqtrade/user_data/configs/config.json
+      --strategy HPStrategy_12_27
