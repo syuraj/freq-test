@@ -200,7 +200,7 @@
         
         {
             "method": "VolumePairList",
-            "number_assets": 60,
+            "number_assets": 40,
             "sort_key": "quoteVolume",
             "min_value": 0,
             "refresh_period": 1800
@@ -208,14 +208,14 @@
           {"method": "AgeFilter", "min_days_listed": 7},
           {
                   "method": "VolatilityFilter",
-                  "lookback_days": 2,
-                  "min_volatility": 0.06,
+                  "lookback_days": 10,
+                  "min_volatility": 0.05,
                   "max_volatility": 0.70,
                   "refresh_period": 3600
           },
           {
               "method": "RangeStabilityFilter",
-              "lookback_days": 3,
+              "lookback_days": 7,
               "min_rate_of_change": 0.05,
               "refresh_period": 3600
           },
