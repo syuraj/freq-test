@@ -15,4 +15,4 @@ processors:
       fail_on_error: false
 
 output.logstash:
-  hosts: ["sunfreq2.ddns.net:5044"]
+  hosts: ["freq2.siristechnology.com:5044"]

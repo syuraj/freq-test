@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ssh -t ubuntu@sunfreq.ddns.net <<'EOF'
+ssh -t ubuntu@freq1.siristechnology.com <<'EOF'
     while true; do
         for container_id in $(docker ps -q); do
             container_name=$(docker inspect --format '{{.Name}}' $container_id | cut -c2-)

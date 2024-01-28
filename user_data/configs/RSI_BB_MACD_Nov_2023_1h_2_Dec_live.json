@@ -259,7 +259,7 @@
         "CORS_origins": [
             "http://127.0.0.1:8080",
             "http://localhost:8080",
-            "http://sunfreq.ddns.net:8080"
+            "http://freq1.siristechnology.com:8080"
         ],
         "username": "freqtrader",
         "password": "testing@123"

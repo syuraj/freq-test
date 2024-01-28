@@ -6,10 +6,10 @@ if [[ "$#" != 1 ]] ; then
 fi
 
 if [[ $(yq eval ".services.$1" ./docker/docker-compose-1.yml) != "null" ]]; then
-    node='ubuntu@sunfreq.ddns.net'
+    node='ubuntu@freq1.siristechnology.com'
     compose_yml_path="./docker/docker-compose-1.yml"
 else
-    node='ubuntu@sunfreq2.ddns.net'
+    node='ubuntu@freq2.siristechnology.com'
     compose_yml_path="./docker/docker-compose-2.yml"
 fi
 

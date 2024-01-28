@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ssh -t ubuntu@sunfreq2.ddns.net <<'EOF'
+ssh -t ubuntu@freq2.siristechnology.com <<'EOF'
     d='sudo docker'
     while true; do
         for container_id in $($d ps -q); do

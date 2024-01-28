@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nodes=('ubuntu@sunfreq.ddns.net' 'ubuntu@sunfreq2.ddns.net')
+nodes=('ubuntu@freq1.siristechnology.com' 'ubuntu@freq2.siristechnology.com')
 
 deploy_to_node() {
     local node=$1
