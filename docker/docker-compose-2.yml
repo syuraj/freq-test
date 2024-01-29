@@ -1,50 +1,21 @@
 ---
 version: '3'
 services:
-  ichiV1:
-    image: freqtradeorg/freqtrade:stable
-    restart: unless-stopped
-    container_name: ichiV1
-    volumes:
-      - "../user_data:/freqtrade/user_data"
-    ports:
-      - "8080:8080"
-    command: >
-      trade
-      --logfile /freqtrade/user_data/logs/ichiV1.log
-      --db-url sqlite:////freqtrade/user_data/dbs/ichiV1.sqlite
-      --config /freqtrade/user_data/configs/config.json
-      --strategy ichiV1
 
-  picasso_RSI_BB_MACD_Dec_2023_15m_3_rls:
+  NostalgiaForInfinityX4_01_28:
     image: freqtradeorg/freqtrade:stable
     restart: unless-stopped
-    container_name: picasso_RSI_BB_MACD_Dec_2023_15m_3_rls
-    volumes:
-      - "../user_data:/freqtrade/user_data"
-    ports:
-      - "8081:8080"
-    command: >
-      trade
-      --logfile /freqtrade/user_data/logs/picasso_RSI_BB_MACD_Dec_2023_15m_3_rls.log
-      --db-url sqlite:////freqtrade/user_data/dbs/picasso_RSI_BB_MACD_Dec_2023_15m_3_rls.sqlite
-      --config /freqtrade/user_data/configs/picasso_config_forwardTesting_liveTrade_WithPerformanceFilter_after500TradesMinimum.json
-      --strategy picasso_RSI_BB_MACD_Dec_2023_15m_3_rls
-
-  NostalgiaForInfinityX4_12_27:
-    image: freqtradeorg/freqtrade:stable
-    restart: unless-stopped
-    container_name: NostalgiaForInfinityX4_12_27
+    container_name: NostalgiaForInfinityX4_01_28
     volumes:
       - "../user_data:/freqtrade/user_data"
     ports:
       - "8082:8080"
     command: >
       trade
-      --logfile /freqtrade/user_data/logs/NostalgiaForInfinityX4_12_27.log
-      --db-url sqlite:////freqtrade/user_data/dbs/NostalgiaForInfinityX4_12_27.sqlite
+      --logfile /freqtrade/user_data/logs/NostalgiaForInfinityX4_01_28.log
+      --db-url sqlite:////freqtrade/user_data/dbs/NostalgiaForInfinityX4_01_28.sqlite
       --config /freqtrade/user_data/configs/config.json
-      --strategy NostalgiaForInfinityX4_12_27
+      --strategy NostalgiaForInfinityX4_01_28
 
   NotAnotherSMAOffsetStrategy:
     image: freqtradeorg/freqtrade:stable
