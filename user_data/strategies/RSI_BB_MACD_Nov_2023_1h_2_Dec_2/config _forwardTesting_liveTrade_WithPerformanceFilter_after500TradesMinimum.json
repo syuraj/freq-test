@@ -66,13 +66,10 @@
              "XMR/USDT:USDT",
              "DOT/USDT:USDT",
              "GALA/USDT:USDT",
-             "MATIC/USDT:USDT",
              "LRC/USDT:USDT",
              "RUNE/USDT:USDT",
-             "AUDIO/USDT:USDT",
              "FIL/USDT:USDT",
              "ETC/USDT:USDT",
-             "EOS/USDT:USDT",
              "ZEC/USDT:USDT",
              "AXS/USDT:USDT",
              "LTC/USDT:USDT",
@@ -106,7 +103,7 @@
             "IMX/USDT:USDT",
              "CELR/USDT:USDT",
             "WOO/USDT:USDT",
-       
+
              "HNT/USDT:USDT",
              "EGLD/USDT:USDT",
              "ENJ/USDT:USDT",
@@ -197,7 +194,7 @@
         ]
     },
     "pairlists": [
-        
+
         {
             "method": "VolumePairList",
             "number_assets": 40,
@@ -221,13 +218,13 @@
           },
           {
             "method": "PerformanceFilter",
-            "minutes": 14400, 
+            "minutes": 14400,
             "min_profit": 0.015
         },
           {
         "method": "ShuffleFilter"
           }
-        
+
     ],
     "edge": {
         "enabled": false,
