@@ -16,7 +16,14 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', 20)
 
-yf_cache = YahooFinanceCache()
+# Conservative API settings to avoid bans
+yf_cache = YahooFinanceCache(
+    cache_days=1,           # Cache for 1 day
+    rate_limit_delay=1.0    # 1 second delay between calls
+)
+
+# Enable quarterly data (set to False to reduce API calls)
+USE_QUARTERLY_DATA = False  # Start conservative
 
 # Growth-focused filters
 filters_dict = {
@@ -46,6 +53,7 @@ MIN_YEARS_REQUIRED = 2  # Minimal safety check
 
 print(f"Targeting large cap growth companies...")
 print(f"Using {len(filters_dict)} filters focused on growth")
+print(f"Quarterly data: {'ENABLED' if USE_QUARTERLY_DATA else 'DISABLED'}")
 
 # %% Check cache age
 def is_cache_stale(path, max_age_days):
@@ -82,13 +90,23 @@ def calculate_cagr(series, years=2):
     return (series.iloc[-1] / series.iloc[-years]) ** (1/(years-1)) - 1
 
 results = []
+api_calls_made = 0
+cached_hits = 0
+
 print(f"\nAnalyzing {len(tickers)} growth companies...")
+print(f"API rate limit: {yf_cache.rate_limit_delay}s between calls")
 
 for ticker in tickers:
     try:
-        stock_data = yf_cache.get_data(ticker)
+        stock_data = yf_cache.get_data(ticker, include_quarterly=USE_QUARTERLY_DATA)
         if stock_data is None:
             continue
+
+        # Track API usage
+        if f"Loading {ticker} from cache..." in str(stock_data):
+            cached_hits += 1
+        else:
+            api_calls_made += 1
 
         info = stock_data['info']
         fin = stock_data['financials']
@@ -167,6 +185,7 @@ if results:
     print(f"\n🚀 Analysis Complete:")
     print(f"✅ Successfully analyzed {len(df)} companies")
     print(f"📊 Filter efficiency: {len(df)}/{len(tickers)} = {len(df)/len(tickers)*100:.1f}%")
+    print(f"🔄 Cache hits: {cached_hits}, API calls: {api_calls_made}")
 
     display_df = top_df[['Ticker', 'Market Cap ($B)', 'Revenue Growth YoY (%)',
                         'Net Income Growth YoY (%)', 'Rev CAGR', 'Net Income CAGR', 'Growth Score']].copy()
