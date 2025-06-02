@@ -1,0 +1,135 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+---
+languages: [python]
+filePatterns: ["*.py"]
+---
+
+# Python Financial Data Analysis Rules
+
+These rules apply specifically to Python files in financial data analysis projects.
+
+## Code Style & Formatting
+
+- Use minimal comments - only essential ones for major sections
+- Prefer clean, readable code over excessive documentation
+- Use `# %%` for Jupyter-style cell separation in main analysis scripts
+- Keep line length reasonable, prefer readability over strict limits
+- Use snake_case for variables, functions, and file names
+- Use PascalCase for class names
+
+## Import Organization
+
+```python
+# Standard library imports first
+import os
+import time
+from datetime import datetime
+
+# Third-party imports
+import pandas as pd
+import numpy as np
+import yfinance as yf
+
+# Local imports last
+from yahoo_finance_cache import YahooFinanceCache
+from send_email import send_styled_table_email
+```
+
+## Data Handling Patterns
+
+- Always check for empty DataFrames before processing: `if df.empty:`
+- Use `.dropna().sort_index()` for financial time series data
+- Round financial metrics to 2 decimal places for display
+- Convert ratios to percentages for user-friendly display: `round(value * 100, 2)`
+- Use descriptive column names: "Revenue Growth YoY (%)", "Market Cap ($B)"
+
+## Error Handling
+
+- Use try-except blocks for external API calls (Yahoo Finance, Finviz)
+- Print informative error messages: `print(f"Error processing {ticker}: {e}")`
+- Continue processing other items on individual failures
+- Return `None` or `continue` for graceful degradation
+
+## Financial Analysis Conventions
+
+- Use CAGR for multi-year growth analysis
+- Implement z-score normalization for scoring: `(series - series.mean()) / series.std()`
+- Handle division by zero: check `if series.std() == 0`
+- Use weighted scoring for multiple metrics
+- Filter data by minimum required years: `MIN_YEARS_REQUIRED`
+
+## Email & Output Formatting
+
+- Use emoji for status messages: 🚀 ✅ 📊 ❌
+- Create email-friendly HTML with inline styles
+- Use explicit borders for table compatibility: `border: 1px solid #ddd`
+- Alternate row colors for readability
+- Right-align numeric data, left-align text
+- Include both plain text and HTML versions of emails
+
+## Class Design
+
+- Use private methods with underscore prefix: `_get_ticker_dir()`
+- Initialize with configurable parameters: `cache_dir="yf_cache", cache_days=1`
+- Create directories automatically: `os.makedirs(dir, exist_ok=True)`
+- Separate concerns: data fetching, caching, analysis, email
+
+## Variable Naming
+
+- Use descriptive names for financial metrics:
+  - `rev_cagr` for revenue CAGR
+  - `net_income_growth` for net income growth
+  - `market_cap` for market capitalization
+- Use `df` for main DataFrames, `display_df` for formatted output
+- Use `ticker` for stock symbols, `stock_data` for Yahoo Finance data
+
+## Function Patterns
+
+- Keep functions focused on single responsibility
+- Use early returns for validation: `if condition: return None`
+- Pass DataFrames and return processed results
+- Use helper functions for repetitive calculations
+
+## Configuration
+
+- Define filter dictionaries clearly with descriptive keys
+- Use constants for thresholds: `MIN_YEARS_REQUIRED = 2`
+- Make cache settings configurable
+- Group related settings together
+
+## Pandas Best Practices
+
+- Set display options for better console output
+- Use `.copy()` when creating display DataFrames
+- Use `.iloc[]` for position-based indexing
+- Use `.loc[]` for label-based indexing
+- Handle missing data explicitly with `.dropna()`
+
+## File Organization
+
+- Separate concerns into focused modules:
+  - Analysis logic in main script
+  - Caching in dedicated class
+  - Email functionality in separate module
+- Use descriptive file names: `yahoo_finance_cache.py`, `send_email.py`
+- Import only what you need from each module
+
+## External API Usage
+
+- Cache API responses to avoid rate limits
+- Implement retry logic for transient failures
+- Print progress for long-running operations
+- Handle missing or invalid data gracefully
+- Use official libraries when available (yfinance, finvizfinance)
+
+## Data Validation
+
+- Check for required columns before processing
+- Validate minimum data requirements
+- Handle edge cases like zero values in calculations
+- Use `pd.isna()` for missing value checks
+- Implement safe mathematical operations

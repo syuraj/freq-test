@@ -9,11 +9,14 @@ import importlib
 import send_email
 importlib.reload(send_email)
 from send_email import send_styled_table_email
+from yahoo_finance_cache import YahooFinanceCache
 
 # Set pandas display options for better table formatting
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', 20)
+
+yf_cache = YahooFinanceCache()
 
 # Growth-focused filters
 filters_dict = {
@@ -83,12 +86,15 @@ print(f"\nAnalyzing {len(tickers)} growth companies...")
 
 for ticker in tickers:
     try:
-        stock = yf.Ticker(ticker)
-        info = stock.info
-        market_cap = info.get("marketCap", np.nan)
+        stock_data = yf_cache.get_data(ticker)
+        if stock_data is None:
+            continue
 
-        fin = stock.financials
-        income_stmt = stock.income_stmt
+        info = stock_data['info']
+        fin = stock_data['financials']
+        income_stmt = stock_data['income_stmt']
+
+        market_cap = info.get("marketCap", np.nan)
 
         if fin.empty or income_stmt.empty:
             continue
@@ -123,9 +129,9 @@ for ticker in tickers:
             "Market Cap ($B)": round(market_cap / 1e9, 2),
             "Revenue Growth YoY (%)": round(revenue_growth * 100, 2),
             "Net Income Growth YoY (%)": round(net_income_growth * 100, 2),
-            "Rev CAGR": round(rev_cagr * 100, 2),  # Convert to percentage
-            "Net Income CAGR": round(net_income_cagr * 100, 2),  # Convert to percentage
-            "Growth Acceleration": round(growth_acceleration * 100, 2),  # Convert to percentage
+            "Rev CAGR": round(rev_cagr * 100, 2),
+            "Net Income CAGR": round(net_income_cagr * 100, 2),
+            "Growth Acceleration": round(growth_acceleration * 100, 2),
         })
 
     except Exception as e:
@@ -141,7 +147,7 @@ if results:
             return pd.Series([0] * len(series), index=series.index)
         return (series - series.mean()) / series.std()
 
-    # Growth-focused scoring (use original values for Z-score calculation)
+    # Growth-focused scoring
     df['Rev CAGR Z'] = safe_zscore(df['Rev CAGR'])
     df['Net Income CAGR Z'] = safe_zscore(df['Net Income CAGR'])
     df['Recent Rev Growth Z'] = safe_zscore(df['Revenue Growth YoY (%)'])
