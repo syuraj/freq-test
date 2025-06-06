@@ -1,2 +1,4 @@
 finviz_*.csv
 yf_cache/*
+finviz_cache/*
+error.log

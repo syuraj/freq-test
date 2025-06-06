@@ -2,115 +2,75 @@
 import yfinance as yf
 import pandas as pd
 import numpy as np
-from finvizfinance.screener.overview import Overview
 import os
 import time
 import importlib
 import send_email
 importlib.reload(send_email)
 from send_email import send_styled_table_email
+import yahoo_finance_cache
+importlib.reload(yahoo_finance_cache)
 from yahoo_finance_cache import YahooFinanceCache
+from finviz_screener import FinvizScreener
 
 # Set pandas display options for better table formatting
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', 20)
 
-# Conservative API settings to avoid bans
+# Initialize screeners
 yf_cache = YahooFinanceCache(
     cache_days=1,           # Cache for 1 day
     rate_limit_delay=1.0    # 1 second delay between calls
 )
 
-# Enable quarterly data (set to False to reduce API calls)
-USE_QUARTERLY_DATA = False  # Start conservative
+finviz_screener = FinvizScreener(
+    cache_days=7
+)
 
-# Growth-focused filters
-filters_dict = {
-    "Sector": "Technology",
-    "Market Cap.": "Large ($10bln to $200bln)",
-    "IPO Date": "More than 5 years ago",
-
-    # Growth indicators
-    "EPS growththis year": "Positive (>0%)",
-    "EPS growthnext year": "Positive (>0%)",
-    "Sales growthqtr over qtr": "Positive (>0%)",
-    "Sales growthpast 5 years": "Positive (>0%)",
-
-    # Quality filters - LOOSENED
-    "P/E": "Profitable (>0)",  # Keep this as it's important
-    "Average Volume": "Over 50K",  # LOOSENED: Reduced from 50K to 10K
-    "Return on Equity": "Positive (>0%)",  # LOOSENED: Reduced from >10% to just positive
-
-    # Momentum indicators - LOOSENED
-    # Removed "Performance": "Week Up" - too restrictive
-    "Relative Volume": "Over 1",  # LOOSENED: Reduced from 1.5 to 1.0
-}
-
-cache_file = "finviz_largecap_growth.csv"
-max_cache_age_days = 7
-MIN_YEARS_REQUIRED = 2  # Minimal safety check
+# Minimum number of quarters required (8 quarters = 2 years)
+MIN_PERIODS_REQUIRED = 8
 
 print(f"Targeting large cap growth companies...")
-print(f"Using {len(filters_dict)} filters focused on growth")
-print(f"Quarterly data: {'ENABLED' if USE_QUARTERLY_DATA else 'DISABLED'}")
 
-# %% Check cache age
-def is_cache_stale(path, max_age_days):
-    if not os.path.exists(path):
-        return True
-    last_modified = os.path.getmtime(path)
-    age_days = (time.time() - last_modified) / (60 * 60 * 24)
-    return age_days > max_age_days
+# %% Get Finviz data
+filters_dict = finviz_screener.get_growth_tech_filters()
+print(f"Using {len(filters_dict)} Finviz filters focused on growth")
 
-if is_cache_stale(cache_file, max_cache_age_days):
-    print("Fetching fresh data from Finviz...")
-    overview = Overview()
-    overview.set_filter(filters_dict=filters_dict)
-    df_finviz = overview.screener_view()
+df_finviz = finviz_screener.screen_stocks(
+    filters_dict=filters_dict,
+    screen_name="largecap_growth"
+)
 
-    if df_finviz is not None and not df_finviz.empty:
-        df_finviz.to_csv(cache_file, index=False)
-        print(f"Found {len(df_finviz)} growth companies")
-    else:
-        print("No companies found")
-        exit()
-else:
-    print("Using cached data...")
-    df_finviz = pd.read_csv(cache_file)
-    print(f"Loaded {len(df_finviz)} companies from cache")
+if df_finviz.empty:
+    print("No companies found")
+    exit()
 
-tickers = df_finviz['Ticker'].tolist()
+tickers = finviz_screener.get_tickers_list(df_finviz)
+print(f"Selected {len(tickers)} companies for analysis")
 
 # %% Calculate growth scores
-def calculate_cagr(series, years=2):
-    """Calculate CAGR for specified number of years"""
-    if len(series) < years:
+def calculate_cqgr(series, periods=8):
+    """Calculate Compound Quarterly Growth Rate (CQGR) for specified number of periods (quarters)"""
+    if len(series) < periods:
         return np.nan
-    return (series.iloc[-1] / series.iloc[-years]) ** (1/(years-1)) - 1
+    return (series.iloc[-1] / series.iloc[-periods]) ** (1/(periods-1)) - 1
 
 results = []
-api_calls_made = 0
-cached_hits = 0
 
 print(f"\nAnalyzing {len(tickers)} growth companies...")
 print(f"API rate limit: {yf_cache.rate_limit_delay}s between calls")
 
-for ticker in tickers:
+for ticker in tickers[:2]:
     try:
-        stock_data = yf_cache.get_data(ticker, include_quarterly=USE_QUARTERLY_DATA)
+        print(f"Processing {ticker}...")
+        stock_data = yf_cache.get_data(ticker)
         if stock_data is None:
             continue
 
-        # Track API usage
-        if f"Loading {ticker} from cache..." in str(stock_data):
-            cached_hits += 1
-        else:
-            api_calls_made += 1
-
         info = stock_data['info']
-        fin = stock_data['financials']
-        income_stmt = stock_data['income_stmt']
+        fin = stock_data['quarterly_financials']
+        income_stmt = stock_data['quarterly_income_stmt']
 
         market_cap = info.get("marketCap", np.nan)
 
@@ -123,19 +83,17 @@ for ticker in tickers:
         rev = fin.loc["Total Revenue"].dropna().sort_index()
         net_income = income_stmt.loc["Net Income"].dropna().sort_index()
 
-        if (len(rev) < MIN_YEARS_REQUIRED or len(net_income) < MIN_YEARS_REQUIRED):
+        if (len(rev) < MIN_PERIODS_REQUIRED or len(net_income) < MIN_PERIODS_REQUIRED):
             continue
 
-        # Calculate growth metrics
         revenue_growth = (rev.iloc[-1] - rev.iloc[-2]) / rev.iloc[-2]
         net_income_growth = (net_income.iloc[-1] - net_income.iloc[-2]) / net_income.iloc[-2]
-        rev_cagr = calculate_cagr(rev, MIN_YEARS_REQUIRED)
-        net_income_cagr = calculate_cagr(net_income, MIN_YEARS_REQUIRED)
+        rev_cagr = calculate_cqgr(rev, MIN_PERIODS_REQUIRED)
+        net_income_cagr = calculate_cqgr(net_income, MIN_PERIODS_REQUIRED)
 
         if pd.isna(rev_cagr) or pd.isna(net_income_cagr):
             continue
 
-        # Growth acceleration
         if len(rev) >= 4 and rev.iloc[-3] != 0:
             prev_growth = (rev.iloc[-2] - rev.iloc[-3]) / rev.iloc[-3]
             growth_acceleration = revenue_growth - prev_growth
@@ -182,10 +140,9 @@ if results:
     df = df.sort_values(by="Growth Score", ascending=False)
     top_df = df.head(5)
 
-    print(f"\n🚀 Analysis Complete:")
+    print(f"\nAnalysis Complete:")
     print(f"✅ Successfully analyzed {len(df)} companies")
     print(f"📊 Filter efficiency: {len(df)}/{len(tickers)} = {len(df)/len(tickers)*100:.1f}%")
-    print(f"🔄 Cache hits: {cached_hits}, API calls: {api_calls_made}")
 
     display_df = top_df[['Ticker', 'Market Cap ($B)', 'Revenue Growth YoY (%)',
                         'Net Income Growth YoY (%)', 'Rev CAGR', 'Net Income CAGR', 'Growth Score']].copy()
@@ -198,12 +155,12 @@ if results:
     print(display_df)
 
     # Send styled email
-    if not top_df.empty:
-        send_styled_table_email(
-            "Top 5 Growth Stocks",
-            display_df,
-            "🏆 Top 5 Large Cap Tech Growth Companies"
-        )
+    # if not top_df.empty:
+    #     send_styled_table_email(
+    #         "Top 5 Growth Stocks",
+    #         display_df,
+    #         "🏆 Top 5 Large Cap Tech Growth Companies"
+    #     )
 
 else:
     print("❌ No companies met the growth and data requirements")

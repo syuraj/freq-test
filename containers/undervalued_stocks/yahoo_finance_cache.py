@@ -74,7 +74,7 @@ class YahooFinanceCache:
 
         return stock_data
 
-    def get_data(self, ticker, include_quarterly=False, max_retries=3):
+    def get_data(self, ticker, max_retries=3):
         cached_data = self.load_data(ticker)
         if cached_data is not None:
             print(f"Loading {ticker} from cache...")
@@ -92,18 +92,12 @@ class YahooFinanceCache:
                     'financials': stock.financials,
                     'income_stmt': stock.income_stmt,
                     'balance_sheet': stock.balance_sheet,
-                    'cashflow': stock.cashflow
+                    'cashflow': stock.cashflow,
+                    'quarterly_financials': stock.quarterly_financials,
+                    'quarterly_income_stmt': stock.quarterly_income_stmt,
+                    'quarterly_balance_sheet': stock.quarterly_balance_sheet,
+                    'quarterly_cashflow': stock.quarterly_cashflow
                 }
-
-                if include_quarterly:
-                    print(f"  Fetching quarterly data for {ticker}...")
-                    self._rate_limit_sleep()
-                    stock_data.update({
-                        'quarterly_financials': stock.quarterly_financials,
-                        'quarterly_income_stmt': stock.quarterly_income_stmt,
-                        'quarterly_balance_sheet': stock.quarterly_balance_sheet,
-                        'quarterly_cashflow': stock.quarterly_cashflow
-                    })
 
                 self.save_data(ticker, stock_data)
                 return stock_data
