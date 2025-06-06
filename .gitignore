@@ -1,6 +1,7 @@
 .git
 .DS_Store
 .idea/
+.env
 
 **/data
 **/*.sqlite*

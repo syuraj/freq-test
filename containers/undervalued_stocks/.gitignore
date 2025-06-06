@@ -1,4 +1,6 @@
+.env
 finviz_*.csv
 yf_cache/*
+av_cache/*
 finviz_cache/*
 error.log
