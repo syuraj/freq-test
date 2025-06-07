@@ -4,11 +4,11 @@ import numpy as np
 import os
 import time
 import importlib
-from app import send_email
+from helpers import send_email
 importlib.reload(send_email)
-from app.send_email import send_styled_table_email
-from app.alpha_vantage_cache import AlphaVantageCache
-from app.finviz_screener import FinvizScreener
+from helpers.send_email import send_styled_table_email
+from helpers.alpha_vantage_cache import AlphaVantageCache
+from helpers.finviz_screener import FinvizScreener
 
 # Set pandas display options for better table formatting
 pd.set_option('display.max_columns', None)

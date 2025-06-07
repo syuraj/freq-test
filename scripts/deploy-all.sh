@@ -16,14 +16,14 @@ deploy_to_node() {
 
     printf "\n deploying to $1 ....\n\n"
 
-    rsync -rvth --progress --filter=':- .gitignore' ./ $node:~/freq-test --rsync-path="sudo rsync"
+    rsync -rvth --progress --include='.env' --filter=':- .gitignore' ./ $node:~/freq-test --rsync-path="sudo rsync"
 
     if [ "$4" == "--restart" ]; then
         echo "Stopping and deploying new containers"
-        ssh -t $node "bash -lic \"cd ~/freq-test; d compose -f ${compose_yml_path} build; d compose -f ${compose_yml_path} down; d compose -f ${compose_yml_path} up -d; d ps\""
+        ssh -t $node "bash -lic 'cd ~/freq-test; sudo cp .env ./docker; d compose -f ${compose_yml_path} build; d compose -f ${compose_yml_path} down; d compose -f ${compose_yml_path} up -d; d ps'"
     else
         echo "Deploying containers only if yml change"
-        ssh -t $node "bash -lic \"cd ~/freq-test; d compose -f ${compose_yml_path} build; d compose -f ${compose_yml_path} up -d; d ps\""
+        ssh -t $node "bash -lic 'cd ~/freq-test; sudo cp .env ./docker; d compose -f ${compose_yml_path} build; d compose -f ${compose_yml_path} up -d; d ps'"
     fi
 }
 

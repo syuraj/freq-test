@@ -1,6 +1,20 @@
 ---
 version: '3'
 services:
+  under_valued_stocks:
+    build:
+      context: ../containers/undervalued_stocks
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    container_name: under_valued_stocks
+    ports:
+      - "8081:8080"
+    volumes:
+      - "../containers/undervalued_stocks/av_cache:/app/av_cache"
+      - "../containers/undervalued_stocks/finviz_cache:/app/finviz_cache"
+    environment:
+      - ALPHAVANTAGE_API_KEY=${ALPHAVANTAGE_API_KEY}
+      - GAPP_PWD=${GAPP_PWD}
   hippo_SMAOffset:
     # image: freqtrade_custom
     image: freqtradeorg/freqtrade:stable
