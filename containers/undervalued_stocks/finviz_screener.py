@@ -100,3 +100,13 @@ class FinvizScreener:
             "industries": df_finviz['Industry'].value_counts().head(5).to_dict() if 'Industry' in df_finviz.columns else {}
         }
         return stats
+
+    def get_lowest_pe_tickers(self, df_finviz, top_n=25):
+        if 'P/E' not in df_finviz.columns or 'Market Cap' not in df_finviz.columns:
+            return []
+        df_sorted = df_finviz.copy()
+        df_sorted['P/E'] = pd.to_numeric(df_sorted['P/E'], errors='coerce')
+        df_sorted['Market Cap'] = pd.to_numeric(df_sorted['Market Cap'], errors='coerce')
+        df_sorted = df_sorted.dropna(subset=['P/E', 'Market Cap'])
+        df_sorted = df_sorted.sort_values(by='P/E', ascending=True)
+        return df_sorted[['Ticker', 'Market Cap', 'P/E']].head(top_n).to_dict('records')
