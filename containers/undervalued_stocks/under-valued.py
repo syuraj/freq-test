@@ -57,16 +57,10 @@ def calculate_cqgr(series, periods=8):
 results = []
 
 print(f"\nAnalyzing {len(tickers)} growth companies...")
-for ticker in tickers:
+for ticker in tickers[:3]:
     try:
         print(f"Processing {ticker}...")
         income_df = av_cache.get_quarterly_income(ticker)
-        if income_df.empty:
-            continue
-        info = {}
-
-        if 'totalRevenue' not in income_df.columns or 'netIncome' not in income_df.columns:
-            continue
 
         rev = pd.to_numeric(
             income_df.set_index('fiscalDateEnding')['totalRevenue'], errors='coerce'
@@ -87,6 +81,8 @@ for ticker in tickers:
             growth_acceleration = revenue_growth - prev_growth
         else:
             growth_acceleration = 0
+
+        pe, profit_margin, peg, roe = av_cache.get_overview_metrics(ticker)
         results.append({
             "Ticker": ticker,
             "Revenue Growth QoQ (%)": round(revenue_growth * 100, 2),
@@ -94,6 +90,10 @@ for ticker in tickers:
             "Rev CAGR": round(rev_cagr * 100, 2),
             "Net Income CAGR": round(net_income_cagr * 100, 2),
             "Growth Acceleration": round(growth_acceleration * 100, 2),
+            "P/E Ratio": pe,
+            "Profit Margin": profit_margin,
+            "PEG Ratio": peg,
+            "ROE": roe,
         })
     except Exception as e:
         print(f"Error processing {ticker}: {e}")
@@ -113,16 +113,33 @@ if results:
     df['Net Income CAGR Z'] = safe_zscore(df['Net Income CAGR'])
     df['Recent Rev Growth Z'] = safe_zscore(df['Revenue Growth QoQ (%)'])
     df['Growth Accel Z'] = safe_zscore(df['Growth Acceleration'])
+    # Z-scores for overview metrics (across all stocks)
+    df['P/E Z'] = safe_zscore(df['P/E Ratio'])
+    df['Cheapness Z'] = -df['P/E Z']  # Lower P/E is better
+    df['Profit Margin Z'] = safe_zscore(df['Profit Margin'])
+    df['PEG Z'] = -safe_zscore(df['PEG Ratio'])  # Lower PEG is better
+    df['ROE Z'] = safe_zscore(df['ROE'])  # Higher ROE is better
 
-    # Combined score
+    # Combined growth-only score
     df['Growth Score'] = (
         0.3 * df['Rev CAGR Z'] +
         0.2 * df['Net Income CAGR Z'] +
         0.3 * df['Recent Rev Growth Z'] +
         0.2 * df['Growth Accel Z']
     )
+    # Composite score: growth + value + quality
+    df['Composite Score'] = (
+        0.13 * df['Rev CAGR Z'] +
+        0.12 * df['Net Income CAGR Z'] +
+        0.13 * df['Recent Rev Growth Z'] +
+        0.12 * df['Growth Accel Z'] +
+        0.13 * df['Cheapness Z'] +
+        0.10 * df['Profit Margin Z'] +
+        0.13 * df['PEG Z'] +
+        0.14 * df['ROE Z']
+    )
 
-    df = df.sort_values(by="Growth Score", ascending=False)
+    df = df.sort_values(by="Composite Score", ascending=False)
     top_df = df.head(5)
 
     print(f"\nAnalysis Complete:")
@@ -130,21 +147,20 @@ if results:
     print(f"📊 Filter efficiency: {len(df)}/{len(tickers)} = {len(df)/len(tickers)*100:.1f}%")
 
     display_df = top_df[['Ticker', 'Revenue Growth QoQ (%)',
-                        'Net Income Growth QoQ (%)', 'Rev CAGR', 'Net Income CAGR', 'Growth Score']].copy()
+                        'Net Income Growth QoQ (%)', 'Rev CAGR', 'Net Income CAGR', 'Growth Score', 'Composite Score']].copy()
 
-    # Round Growth Score for display
     display_df['Growth Score'] = display_df['Growth Score'].round(2)
+    display_df['Composite Score'] = display_df['Composite Score'].round(2)
 
-    print("\n🏆 TOP 5 GROWTH COMPANIES")
-    print("=" * 26)
+    print("\n🏆 TOP 5 GROWTH + VALUE COMPANIES")
+    print("=" * 34)
     print(display_df)
 
-    # Send styled email
     if not top_df.empty:
         send_styled_table_email(
-            "Top 5 Growth Stocks",
+            "Top 5 Growth + Value Stocks",
             display_df,
-            "🏆 Top 5 Large Cap Tech Growth Companies"
+            "🏆 Top 5 Large Cap Tech Growth + Value Companies"
         )
 
 else:
