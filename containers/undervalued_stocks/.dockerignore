@@ -1,0 +1,7 @@
+# Exclude cache folders
+av_cache/
+finviz_cache/
+yf_cache/
+# Exclude all CSV files
+*.csv
+*.log

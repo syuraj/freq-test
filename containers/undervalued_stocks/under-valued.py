@@ -41,7 +41,7 @@ if df_finviz.empty:
     print("No companies found")
     exit()
 
-pe_stocks = finviz_screener.get_lowest_pe_tickers(df_finviz, top_n=15)
+pe_stocks = finviz_screener.get_lowest_pe_tickers(df_finviz, top_n=5)
 tickers = [item['Ticker'] for item in pe_stocks]
 market_caps = {item['Ticker']: item['Market Cap'] for item in pe_stocks}
 pe_ratios = {item['Ticker']: item['P/E'] for item in pe_stocks}
@@ -66,10 +66,10 @@ for ticker in tickers:
         income_df = av_cache.get_quarterly_income(ticker)
         rev = pd.to_numeric(
             income_df.set_index('fiscalDateEnding')['totalRevenue'], errors='coerce'
-        ).dropna().sort_index()
+        ).dropna().sort_index(ascending=False)
         net_income = pd.to_numeric(
             income_df.set_index('fiscalDateEnding')['netIncome'], errors='coerce'
-        ).dropna().sort_index()
+        ).dropna().sort_index(ascending=False)
         if (len(rev) < MIN_PERIODS_REQUIRED or len(net_income) < MIN_PERIODS_REQUIRED):
             continue
         revenue_growth = (rev.iloc[0] - rev.iloc[1]) / rev.iloc[1]
