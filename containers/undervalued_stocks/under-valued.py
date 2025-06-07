@@ -4,11 +4,11 @@ import numpy as np
 import os
 import time
 import importlib
-import send_email
+from app import send_email
 importlib.reload(send_email)
-from send_email import send_styled_table_email
-from alpha_vantage_cache import AlphaVantageCache
-from finviz_screener import FinvizScreener
+from app.send_email import send_styled_table_email
+from app.alpha_vantage_cache import AlphaVantageCache
+from app.finviz_screener import FinvizScreener
 
 # Set pandas display options for better table formatting
 pd.set_option('display.max_columns', None)
@@ -49,13 +49,14 @@ print(f"Selected {len(tickers)} companies for analysis (lowest P/E)")
 
 # %% Calculate growth scores
 def calculate_cqgr(series, periods=8):
-    """Calculate Compound Quarterly Growth Rate (CQGR) for the last 8 periods/quarters, assuming chronological order (oldest to newest)."""
+    """Calculate CQGR for the latest N periods (most recent first); Exclude if any value is <= 0."""
     if len(series) < periods:
         return np.nan
-    s = series.iloc[-periods:]
-    if s.iloc[0] <= 0 or s.iloc[-1] <= 0:
+    series = net_income
+    s = series.iloc[:periods]
+    if (s == 0).any():
         return np.nan
-    return (s.iloc[-1] / s.iloc[0]) ** (1/(periods-1)) - 1
+    return (s.iloc[0] / s.iloc[-1]) ** (1/(periods-1)) - 1
 
 results = []
 
